@@ -35,4 +35,11 @@ public class CustomerController {
 
         return customerService.getAllCustomers();
     }
+    @PutMapping("/{id}")
+    public Customer updateCustomer(
+            @PathVariable Long id,
+            @Valid @RequestBody CustomerRequest request) {
+
+        return customerService.updateCustomer(id, request);
+    }
 }

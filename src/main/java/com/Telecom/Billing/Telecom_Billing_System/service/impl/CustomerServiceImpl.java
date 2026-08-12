@@ -48,4 +48,20 @@ public class CustomerServiceImpl implements CustomerService  {
 
         return "CUS-" + System.currentTimeMillis();
     }
+
+    @Override
+    public Customer updateCustomer(Long id, CustomerRequest request) {
+
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Customer not found with id: " + id));
+
+        customer.setFirstName(request.firstName());
+        customer.setLastName(request.lastName());
+        customer.setEmail(request.email());
+        customer.setPhone(request.phone());
+
+        return customerRepository.save(customer);
+    }
+
 }
