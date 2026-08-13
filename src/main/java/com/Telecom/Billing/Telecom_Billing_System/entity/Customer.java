@@ -3,6 +3,7 @@ package com.Telecom.Billing.Telecom_Billing_System.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Immutable;
 
 import java.time.LocalDateTime;
 

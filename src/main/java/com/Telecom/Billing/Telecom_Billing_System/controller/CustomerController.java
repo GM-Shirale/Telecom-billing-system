@@ -35,11 +35,18 @@ public class CustomerController {
 
         return customerService.getAllCustomers();
     }
+
+
     @PutMapping("/{id}")
-    public Customer updateCustomer(
-            @PathVariable Long id,
-            @Valid @RequestBody CustomerRequest request) {
+    public Customer updateCustomer(@PathVariable Long id, @Valid @RequestBody CustomerRequest request) {
 
         return customerService.updateCustomer(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCustomer(@PathVariable Long id) {
+
+        customerService.deleteCustomer(id);
     }
 }

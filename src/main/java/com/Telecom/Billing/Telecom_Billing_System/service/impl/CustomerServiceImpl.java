@@ -2,6 +2,7 @@ package com.Telecom.Billing.Telecom_Billing_System.service.impl;
 
 import com.Telecom.Billing.Telecom_Billing_System.dto.request.CustomerRequest;
 import com.Telecom.Billing.Telecom_Billing_System.entity.Customer;
+import com.Telecom.Billing.Telecom_Billing_System.expection.ResourceNotFoundException;
 import com.Telecom.Billing.Telecom_Billing_System.repository.CustomerRepository;
 import com.Telecom.Billing.Telecom_Billing_System.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,9 @@ public class CustomerServiceImpl implements CustomerService  {
 
         return customerRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Customer not found: " + id));
+                        new ResourceNotFoundException(
+                                "Customer not found with id: " + id
+                        ));
     }
 
     @Override
@@ -50,11 +53,15 @@ public class CustomerServiceImpl implements CustomerService  {
     }
 
     @Override
-    public Customer updateCustomer(Long id, CustomerRequest request) {
+    public Customer updateCustomer(
+            Long id,
+            CustomerRequest request) {
 
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Customer not found with id: " + id));
+                        new ResourceNotFoundException(
+                                "Customer not found with id: " + id
+                        ));
 
         customer.setFirstName(request.firstName());
         customer.setLastName(request.lastName());
@@ -62,6 +69,18 @@ public class CustomerServiceImpl implements CustomerService  {
         customer.setPhone(request.phone());
 
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Customer not found with id: " + id
+                        ));
+
+        customerRepository.delete(customer);
     }
 
 }
