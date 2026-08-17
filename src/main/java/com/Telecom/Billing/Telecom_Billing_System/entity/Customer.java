@@ -1,11 +1,14 @@
 package com.Telecom.Billing.Telecom_Billing_System.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Immutable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -41,6 +44,11 @@ public class Customer {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<CustomerAddress> addresses = new ArrayList<>();
 
     @PrePersist
     public void onCreate() {

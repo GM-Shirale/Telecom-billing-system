@@ -1,4 +1,4 @@
-package com.Telecom.Billing.Telecom_Billing_System.expection;
+package com.Telecom.Billing.Telecom_Billing_System.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
 

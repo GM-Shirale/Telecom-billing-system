@@ -2,7 +2,7 @@ package com.Telecom.Billing.Telecom_Billing_System.service.impl;
 
 import com.Telecom.Billing.Telecom_Billing_System.dto.request.CustomerRequest;
 import com.Telecom.Billing.Telecom_Billing_System.entity.Customer;
-import com.Telecom.Billing.Telecom_Billing_System.expection.ResourceNotFoundException;
+import com.Telecom.Billing.Telecom_Billing_System.exception.ResourceNotFoundException;
 import com.Telecom.Billing.Telecom_Billing_System.repository.CustomerRepository;
 import com.Telecom.Billing.Telecom_Billing_System.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService  {
         return customerRepository.save(customer);
     }
 
-    @Override
+
     public void deleteCustomer(Long id) {
 
         Customer customer = customerRepository.findById(id)
