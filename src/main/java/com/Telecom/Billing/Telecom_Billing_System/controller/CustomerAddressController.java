@@ -37,9 +37,20 @@ public class CustomerAddressController {
             @PathVariable Long customerId,
             @PathVariable Long addressId) {
 
-        return customerAddressService.getAddress(
+        return customerAddressService.getAddress(customerId, addressId);
+    }
+
+
+    @PutMapping("/{addressId}")
+    public CustomerAddressResponse updateAddress(
+            @PathVariable Long customerId,
+            @PathVariable Long addressId,
+            @Valid @RequestBody CustomerAddressRequest request) {
+
+        return customerAddressService.updateAddress(
                 customerId,
-                addressId
+                addressId,
+                request
         );
     }
 }

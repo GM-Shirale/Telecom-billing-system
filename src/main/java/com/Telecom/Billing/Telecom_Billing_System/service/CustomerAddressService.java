@@ -13,4 +13,6 @@ public interface CustomerAddressService {
 
     CustomerAddressResponse getAddress(Long customerId, Long addressId);
 
+    CustomerAddressResponse updateAddress(Long customerId, Long addressId, CustomerAddressRequest request);
+
 }

@@ -131,4 +131,54 @@ public class CustomerAddressServiceImpl
                 address.getCountry()
         );
     }
+    @Override
+    @Transactional
+    public CustomerAddressResponse updateAddress(Long customerId, Long addressId, CustomerAddressRequest request) {
+
+        // Check customer
+        customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Customer not found with id: " + customerId
+                        ));
+
+        // Find address
+        CustomerAddress address =
+                customerAddressRepository.findById(addressId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Address not found with id: " + addressId
+                                ));
+
+        // Check address belongs to customer
+        if (!address.getCustomer()
+                .getCustomerId()
+                .equals(customerId)) {
+
+            throw new ResourceNotFoundException(
+                    "Address " + addressId +
+                            " does not belong to customer " + customerId
+            );
+        }
+
+        // Update managed entity
+        address.setAddressType(request.addressType());
+        address.setAddressLine(request.addressLine());
+        address.setCity(request.city());
+        address.setState(request.state());
+        address.setPostalCode(request.postalCode());
+        address.setCountry(request.country());
+
+        return new CustomerAddressResponse(
+                address.getAddressId(),
+                customerId,
+                address.getAddressType(),
+                address.getAddressLine(),
+                address.getCity(),
+                address.getState(),
+                address.getPostalCode(),
+                address.getCountry()
+        );
+    }
+
 }
