@@ -15,4 +15,6 @@ public interface CustomerAddressService {
 
     CustomerAddressResponse updateAddress(Long customerId, Long addressId, CustomerAddressRequest request);
 
+    void deleteAddress(Long customerId,Long addressId);
+
 }
