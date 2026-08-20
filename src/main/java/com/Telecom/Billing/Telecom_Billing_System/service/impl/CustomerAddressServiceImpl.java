@@ -181,4 +181,37 @@ public class CustomerAddressServiceImpl
         );
     }
 
+    @Override
+    @Transactional
+    public void deleteAddress(Long customerId, Long addressId) {
+
+        // Check customer
+        customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Customer not found with id: " + customerId
+                        ));
+
+        // Find address
+        CustomerAddress address =
+                customerAddressRepository.findById(addressId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Address not found with id: " + addressId
+                                ));
+
+        // Make sure address belongs to customer
+        if (!address.getCustomer()
+                .getCustomerId()
+                .equals(customerId)) {
+
+            throw new ResourceNotFoundException(
+                    "Address " + addressId +
+                            " does not belong to customer " + customerId
+            );
+        }
+
+        customerAddressRepository.delete(address);
+    }
+
 }

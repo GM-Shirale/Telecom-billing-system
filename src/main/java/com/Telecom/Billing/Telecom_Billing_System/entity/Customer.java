@@ -1,11 +1,8 @@
 package com.Telecom.Billing.Telecom_Billing_System.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Immutable;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,4 +57,10 @@ public class Customer {
     public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+
+    private List<CustomerDocument> documents = new ArrayList<>();
+
+
 }
