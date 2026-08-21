@@ -37,8 +37,7 @@ public class CustomerDocumentController {
     }
 
     @GetMapping
-    public List<CustomerDocumentResponse> getDocuments(
-            @PathVariable Long customerId) {
+    public List<CustomerDocumentResponse> getDocuments(@PathVariable Long customerId) {
 
         return customerDocumentService
                 .getDocumentsByCustomerId(customerId);

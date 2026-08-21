@@ -8,6 +8,7 @@ import com.Telecom.Billing.Telecom_Billing_System.exception.ResourceNotFoundExce
 import com.Telecom.Billing.Telecom_Billing_System.repository.CustomerDocumentRepository;
 import com.Telecom.Billing.Telecom_Billing_System.repository.CustomerRepository;
 import com.Telecom.Billing.Telecom_Billing_System.service.CustomerDocumentService;
+import com.Telecom.Billing.Telecom_Billing_System.service.DocumentVerificationAsyncService;
 import com.Telecom.Billing.Telecom_Billing_System.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentService {
     private final CustomerRepository customerRepository;
     private final CustomerDocumentRepository customerDocumentRepository;
     private final FileStorageService fileStorageService;
+    private final DocumentVerificationAsyncService documentVerificationAsyncService;
 
 
     @Override
@@ -79,6 +81,9 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentService {
 
             CustomerDocument savedDocument =
                     customerDocumentRepository.save(document);
+
+            // Start asynchronous document verification
+            documentVerificationAsyncService.processDocument(savedDocument.getDocumentId());
 
             return mapToResponse(savedDocument);
 
