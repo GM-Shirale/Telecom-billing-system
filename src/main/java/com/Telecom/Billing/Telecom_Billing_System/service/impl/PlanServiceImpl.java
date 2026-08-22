@@ -73,4 +73,42 @@ public class PlanServiceImpl implements PlanService {
                 plan.getUpdatedAt()
         );
     }
+
+    @Override
+    @Transactional
+    public PlanResponse updatePlan(
+            Long planId,
+            PlanRequest request) {
+
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Plan not found with id: " + planId
+                        ));
+
+        plan.setPlanCode(request.planCode());
+        plan.setPlanName(request.planName());
+        plan.setDescription(request.description());
+
+        if (request.active() != null) {
+            plan.setActive(request.active());
+        }
+
+        Plan updatedPlan = planRepository.save(plan);
+
+        return mapToResponse(updatedPlan);
+    }
+
+    @Override
+    @Transactional
+    public void deletePlan(Long planId) {
+
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Plan not found with id: " + planId
+                        ));
+
+        planRepository.delete(plan);
+    }
 }
