@@ -1,5 +1,6 @@
 package com.Telecom.Billing.Telecom_Billing_System.entity;
 
+import com.Telecom.Billing.Telecom_Billing_System.enums.ServiceType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -66,4 +67,8 @@ public class Plan {
     public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private ServiceType serviceType;
 }

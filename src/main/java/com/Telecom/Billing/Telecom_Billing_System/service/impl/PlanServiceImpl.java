@@ -31,6 +31,7 @@ public class PlanServiceImpl implements PlanService {
                                 ? request.active()
                                 : true
                 )
+                .serviceType(request.serviceType())
                 .build();
 
         Plan savedPlan = planRepository.save(plan);
@@ -70,7 +71,8 @@ public class PlanServiceImpl implements PlanService {
                 plan.getDescription(),
                 plan.getActive(),
                 plan.getCreatedAt(),
-                plan.getUpdatedAt()
+                plan.getUpdatedAt(),
+                plan.getServiceType()
         );
     }
 

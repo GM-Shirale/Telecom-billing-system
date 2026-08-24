@@ -1,6 +1,8 @@
 package com.Telecom.Billing.Telecom_Billing_System.dto.request;
 
+import com.Telecom.Billing.Telecom_Billing_System.enums.ServiceType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record PlanRequest(
         @NotBlank(message = "Plan code is required")
@@ -11,7 +13,10 @@ public record PlanRequest(
 
         String description,
 
-        Boolean active
+        Boolean active,
+
+        @NotNull(message = "Service type is required")
+        ServiceType serviceType
 
 ) {
 }
