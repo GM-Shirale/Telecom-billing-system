@@ -11,6 +11,10 @@ public record SubscriptionResponse(
 
         Long planId,
 
+        Long simId,
+
+        String msisdn,
+
         LocalDate startDate,
 
         LocalDate endDate,

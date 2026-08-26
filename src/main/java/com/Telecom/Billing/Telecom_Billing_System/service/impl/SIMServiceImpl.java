@@ -117,31 +117,60 @@ public class SIMServiceImpl implements SIMService {
                                 "SIM not found with id: " + simId
                         ));
 
-        NetworkResource networkResource =
-                networkResourceRepository.findById(
-                        request.networkResourceId()
-                ).orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Network resource not found with id: "
-                                        + request.networkResourceId()
-                        ));
+        NetworkResource oldResource =
+                sim.getNetworkResource();
 
+        NetworkResource newResource =
+                networkResourceRepository.findById(
+                                request.networkResourceId()
+                        )
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Network resource not found with id: "
+                                                + request.networkResourceId()
+                                ));
+
+        // New resource must be MOBILE
         if (!"MOBILE".equalsIgnoreCase(
-                networkResource.getResourceType())) {
+                newResource.getResourceType())) {
 
             throw new IllegalArgumentException(
                     "SIM can only be assigned to MOBILE network resources"
             );
         }
 
+        // If SIM is being moved to another resource
+        if (oldResource != null
+                && !oldResource.getResourceId()
+                .equals(newResource.getResourceId())) {
+
+            // Release old resource
+            oldResource.setStatus("AVAILABLE");
+
+            // New resource must be available
+            if (!"AVAILABLE".equalsIgnoreCase(
+                    newResource.getStatus())) {
+
+                throw new IllegalArgumentException(
+                        "New network resource is not available"
+                );
+            }
+
+            // Allocate new resource
+            newResource.setStatus("ALLOCATED");
+        }
+
         sim.setIccid(request.iccid());
         sim.setMsisdn(request.msisdn());
         sim.setStatus(request.status());
-        sim.setNetworkResource(networkResource);
+        sim.setNetworkResource(newResource);
 
-        return mapToResponse(
-                simRepository.save(sim)
+        return mapToResponse(simRepository.save(sim)
+
         );
+
+
+
     }
 
     @Override
@@ -154,9 +183,18 @@ public class SIMServiceImpl implements SIMService {
                                 "SIM not found with id: " + simId
                         ));
 
+        NetworkResource resource =
+                sim.getNetworkResource();
+
+        if (resource != null) {
+            resource.setStatus("AVAILABLE");
+        }
+
         simRepository.delete(sim);
     }
 
+
+    // Add this method
     private SIMResponse mapToResponse(SIM sim) {
 
         NetworkResource resource =
@@ -182,4 +220,5 @@ public class SIMServiceImpl implements SIMService {
                 sim.getUpdatedAt()
         );
     }
+
 }

@@ -27,6 +27,10 @@ public class Subscription {
     @JoinColumn(name = "plan_id", nullable = false)
     private Plan plan;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sim_id")
+    private SIM sim;
+
     @Column(nullable = false)
     private LocalDate startDate;
 
@@ -49,4 +53,5 @@ public class Subscription {
     public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
 }
